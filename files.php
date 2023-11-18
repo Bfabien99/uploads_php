@@ -16,12 +16,17 @@
         $datetime = new DateTime();
         $datetime = $datetime->getTimestamp();
         $allowed_type = ['image/png','image/jpeg','image/jpg'];
-        foreach ($_FILES['images']['name'] as $key => $value) {
+        if(in_array($_FILES['images']['type'], $allowed_type)){
+                move_uploaded_file($_FILES['images']['tmp_name'], './uploads/'.$datetime.$_FILES['images']['name']);
+                $imgs[] = $datetime.$_FILES['images']['name'];
+            }
+        // Upload de plusieurs fichiers
+        /*foreach ($_FILES['images']['name'] as $key => $value) {
             if(in_array($_FILES['images']['type'][$key], $allowed_type)){
                 move_uploaded_file($_FILES['images']['tmp_name'][$key], './uploads/'.$datetime.$value);
                 $imgs[] = $datetime.$value;
             }
-        }
+        }*/
 
     }
 ?>
@@ -54,7 +59,8 @@
         <br>
         <br -->
         <h3>multi files</h3>
-        <input type="file" name="images[]" id="" multiple>
+        <input type="file" name="images" id="">
+       <!-- Upload de fichiers multiple <input type="file" name="images[]" id="" multiple> -->
         <input type="submit" value="Save">
     </form>
     <?php if(!empty($imgs)):?>
